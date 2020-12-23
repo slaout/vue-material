@@ -127,6 +127,7 @@
       MdTabs: {
         deep: true,
         handler () {
+          console.log("=================watch MdTabs")
           this.recomputeOrderedIds()
           this.setHasContent()
           this.tryKeepCurrentTab()
@@ -140,6 +141,7 @@
         this.activeTab = tabId
       },
       activeButtonEl (activeButtonEl) {
+        console.log("activeButtonEl", activeButtonEl)
         this.activeTabIndex = activeButtonEl ? [].indexOf.call(activeButtonEl.parentNode.childNodes, activeButtonEl) : -1
       },
       activeTabIndex () {
@@ -182,6 +184,7 @@
         })
       },
       tryKeepCurrentTab () {
+        console.log("=================tryKeepCurrentTab")
         if (this.mdSyncRoute) {
           return
         }
@@ -205,17 +208,22 @@
         }
       },
       setActiveButtonEl () {
+        console.log("MdTabs:setActiveButtonEl", this.$refs.navigation.querySelector('.md-tab-nav-button.md-active'))
         this.activeButtonEl = this.$refs.navigation.querySelector('.md-tab-nav-button.md-active')
       },
       setActiveTabByIndex (index) {
         this.activeTab = this.orderedIds[index]
       },
       ensureHasActiveTab () {
+        console.log("MdTabs:ensureHasActiveTab")
+
         if (!this.hasActiveTab()) {
+          console.log("MdTabs:ensureHasActiveTab : ", this.orderedIds[0])
           this.activeTab = this.orderedIds[0]
         }
       },
       setHasContent () {
+        console.log("MdTabs:setHasContent", JSON.stringify(this.MdTabs.items))
         this.hasContent = this.orderedItems.some(item => item.hasContent)
       },
       setIndicatorStyles () {
@@ -264,11 +272,13 @@
         this.calculateTabPos()
       },
       setupObservers () {
+        console.log("MdTabs:setupObservers")
         this.resizeObserver = MdObserveElement(this.$el.querySelector('.md-tabs-content'), {
           childList: true,
           characterData: true,
           subtree: true
         }, () => {
+          console.log("MdTabs:observed... => callResizeFunctions()")
           this.callResizeFunctions()
         })
 
@@ -277,6 +287,7 @@
       recomputeOrderedIds () {
         const orderedIds = this.ours(this.$refs.tabsContainer.querySelectorAll('.md-tab'))
           .map(tabElement => tabElement.mdTabIdAsObject)
+        console.log("orderedIds", orderedIds)
 
         // Do not force VueJs to rerender the view and us to recompute everything if the change event was not about tabs
         if (!areEqual(this.orderedIds, orderedIds)) {
@@ -292,22 +303,28 @@
       }
     },
     created () {
+      console.log("MdTabs:created")
       this.setIndicatorStyles = MdThrottling(this.setIndicatorStyles, 300)
       this.activeTab = this.mdActiveTab
     },
     mounted () {
+      console.log("MdTabs:mounted")
       this.setupObservers()
 
       this.$nextTick().then(() => {
         if (!this.mdSyncRoute) {
+          console.log("MdTabs:mounted => nextTick => recomputeOrderedIds();ensureHasActiveTab();")
           this.recomputeOrderedIds()
           this.ensureHasActiveTab()
         }
 
         return this.$nextTick()
       }).then(() => {
+        console.log("MdTabs:mounted => nextTick => nexTick")
         window.setTimeout(() => {
+          console.log("MdTabs:mounted => nextTick => nexTick => setTimeout(100)")
           this.setActiveButtonEl()
+          console.log("MdTabs:mounted => nextTick => nexTick => setTimeout(100) : result=", this.activeButtonEl)
           this.callResizeFunctions()
           this.noTransition = false
           this.setupObservers()

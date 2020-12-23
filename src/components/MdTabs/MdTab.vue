@@ -41,6 +41,7 @@
     },
     methods: {
       setTabContent () {
+        console.log("===MdTab.setHasContent")
         this.$set(this.MdTabs.items.get(this.id), 'hasContent', !!this.$slots.default)
       },
       setupObserver () {
@@ -53,6 +54,7 @@
         this.$el.mdTabIdAsObject = this.id
 
         // new Map() because Map is not reactive in VueJs 2
+        console.log("===MdTab.setTabData")
         this.MdTabs.items = new Map(this.MdTabs.items.set(this.id, {
           id: this.id,
           hasContent: !!this.$slots.default,
@@ -87,6 +89,8 @@
       }
     },
     mounted () {
+      console.log("MdTab:mounted")
+
       this.setupObserver()
       this.setTabData()
     },
@@ -95,6 +99,8 @@
         this.observer.disconnect()
       }
 
+      console.log("MdTab:beforeDestroy")
+      console.log("===MdTab.delete")
       this.MdTabs.items.delete(this.id)
       this.MdTabs.items = new Map(this.MdTabs.items) // new Map() because Map is not reactive in VueJs 2
     },
