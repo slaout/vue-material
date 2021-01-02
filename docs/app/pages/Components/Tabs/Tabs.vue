@@ -1,3 +1,4 @@
+<example src="./examples/TabOrdering.vue" />
 <example src="./examples/TabRouter.vue" />
 <example src="./examples/TabAlignments.vue" />
 <example src="./examples/TabContent.vue" />
@@ -10,6 +11,30 @@
       <p>Tabs make it easy to explore, switch between different views and enable content organization at a high level, such as different data sets or functional aspects of an app.</p>
       <p>Tabs are really powerful and have deep integration with Vue Core features and router.</p>
       <note-block>More features for tabs will be come in the next weeks, like pagination scroll and touch events. :)</note-block>
+    </div>
+
+    <div class="page-container-section">
+      <h2 id="numeric-bugs-showcase">Numeric bugs showcase</h2>
+
+      <code-example title="Tab ordering with numeric ids or toggled tabs" :component="examples['tab-ordering']" />
+      <p>This example showcases the bugs before the fix:</p>
+      <ul>
+        <li>Contents are always in the correct order, but their tabs are not</li>
+        <li>Numeric-like IDs are placed at the start, ordered by number</li>
+        <li>Clicking a tab label would then show the content of another tab</li>
+        <li>When toggling a tab, it is appended at the end, and not in the place it appears in HTML template: click "Tab Label A id=5", then show the middle tab: the displayed tab contents changes</li>
+        <li>When a new tab appears, the currently selected one must remain selected, even if it is after the new one</li>
+        <li>Note to myself: be careful while fixing the bugs: tabs of a sub-tab-bar should not be merged with current tab-bar</li>
+        <li>Toggle last tab: if it was selected, the previous tab must become selected instead (instead of selecting nothing)</li>
+        <li>Also make sure dynamic IDs are working</li>
+      </ul>
+      <p>I also went into a few existing bugs I fixed:</p>
+      <ul>
+        <li>
+          In the first tab, select the second sub-tab: its height is big.
+          Now select the third tab and then the second tab: their height is the same (one line), but the big height of the second sub-tab is used for the second tab.</li>
+        <li>Click one of the two "Switch to tab..." buttons: two md-change events are triggered.</li>
+      </ul>
     </div>
 
     <div class="page-container-section">
