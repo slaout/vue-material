@@ -15,11 +15,11 @@
           </md-tab>
         </md-tabs>
       </md-tab>
-      <md-tab id="0" md-label="Label B id=0">Content B id=0 (only one line, but tab-bar height vary when switching from tab D)</md-tab>
+      <md-tab :id="0" md-label="Label B id=0">Content B id=0 [NUMBER] (only one line, but tab-bar height vary when switching from tab D)</md-tab>
       <md-tab id="C" md-label="Label C id=C" v-if="showMiddleTab">Content C id=C</md-tab>
       <md-tab id="3" md-label="Label D id=3 (default)">Content D id=3 (default)</md-tab>
       <md-tab id="text" md-label="Label E id=text">Content E id=text</md-tab>
-      <md-tab :id="`_${dynamicId}`" :md-label="`Dynamic id=_${dynamicId}`">Content id=_{{ dynamicId }}</md-tab>
+      <md-tab :id="dynamicId" :md-label="`Dynamic id=${dynamicId}`">Content id={{ dynamicId }}</md-tab>
       <md-tab id="Z" md-label="Label Z id=Z" v-if="showLastTab">Content Z id=Z</md-tab>
     </md-tabs>
     <md-button class="md-primary" @click="showMiddleTab = !showMiddleTab">Toggle middle tab (C id=C)</md-button>
@@ -35,8 +35,10 @@
 
     <h3>Tabs without content should continue to work:</h3>
     <md-tabs>
-      <md-tab id="9" md-label="9"><span v-if="withContent">Content 9!</span></md-tab>
-      <md-tab id="0" md-label="0"><span v-if="withContent">Content 0!</span></md-tab>
+      <md-tab :id="9" md-label="9 [NUMBER]"><span v-if="withContent">Content 9!</span></md-tab>
+      <md-tab :id="NaN" md-label="NaN [NUMBER]"><span v-if="withContent">Content NaN!</span></md-tab>
+      <md-tab id="NaN" md-label="NaN [STRING]"><span v-if="withContent">Content "NaN"!</span></md-tab>
+      <md-tab :id="0" md-label="0 [NUMBER]"><span v-if="withContent">Content 0!</span></md-tab>
     </md-tabs>
     <md-button class="md-primary" @click="withContent = !withContent">Toggle content</md-button>
 
@@ -44,7 +46,8 @@
     <md-tabs>
       <md-tab id="A" md-label="A (with content)">Content of A</md-tab>
       <md-tab id="9" md-label="9 (without content)" />
-      <md-tab id="0" md-label="0 (with content)">Content of 0</md-tab>
+      <md-tab :id="0" md-label="0 [NUMBER] (with content)">Content of 0</md-tab>
+      <md-tab :id="NaN" md-label="NaN [NUMBER] (with content)">Content of NaN</md-tab>
     </md-tabs>
 
     <h3>Tabs without tabs should work too (clearly a bug in user-code, but let's not crash the library):</h3>
